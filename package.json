@@ -1,0 +1,29 @@
+{
+	"name": "simple_authentication",
+	"version": "1.0.0",
+	"description": "a simple authentication using node js and mysql",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "nodemon index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AbhinPrasad/Authentication.git"
+	},
+	"author": "AbhinPrasad",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/AbhinPrasad/Authentication/issues"
+	},
+	"homepage": "https://github.com/AbhinPrasad/Authentication#readme",
+	"dependencies": {
+		"bcrypt": "^5.1.0",
+		"colors": "^1.4.0",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"mysql": "^2.18.1",
+		"mysql2": "^3.2.0",
+		"nodemon": "^2.0.21"
+	}
+}
