@@ -8,20 +8,27 @@ export const userSignup = async (req, res) => {
 		res.status(400).json({ message: "Add all fields" });
 	}
 
-	//sql query
+	//sql queris
 	const sqlInsert = "INSERT INTO user (name, email,password) VALUES (?,?,?)";
+	const sqlCheckEmail = "SELECT * FROM user WHERE email = ?";
 
 	try {
-		//hash password
-		const salt = await bcrypt.genSalt(10);
-		const newPassword = await bcrypt.hash(password, salt);
+		const [userExist] = await db.query(sqlCheckEmail, [email]);
 
-		//insert new user
-		const user = await db.query(sqlInsert, [name, email, newPassword]);
-		res.status(200).json({
-			message: "user registered successfully",
-			data: user[0].insertId
-		});
+		if (userExist.length !== 0) {
+			res.status(400).json({ message: "user already exists" });
+		} else {
+			//hash password
+			const salt = await bcrypt.genSalt(10);
+			const newPassword = await bcrypt.hash(password, salt);
+
+			//insert new user
+			const user = await db.query(sqlInsert, [name, email, newPassword]);
+			res.status(200).json({
+				message: "user registered successfully",
+				data: user[0].insertId
+			});
+		}
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ error: err.message });
@@ -41,7 +48,7 @@ export const userLogin = async (req, res) => {
 		}
 		const user = rows[0];
 
-        const matchPassword = await bcrypt.compare(password,user.password)
+		const matchPassword = await bcrypt.compare(password, user.password);
 
 		if (matchPassword) {
 			res.status(200).json({ message: "login succeess", data: user });
